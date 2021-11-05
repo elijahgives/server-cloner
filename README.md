@@ -9,3 +9,7 @@ This project was made to allow users to copy servers without having the `Adminis
 ## Known Bugs
 - Currently, when it creates channels and categories, it doesn't set the overwrites/permissions, and I'm looking for someone to commit a fix to this as I'm stumped on what to do for it.
 - Delays on changing steps: fixing this in a future update.
+
+## License
+Copyright (c) 2021 ElijahGives
+License can be found in `license` file.
