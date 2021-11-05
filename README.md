@@ -11,5 +11,5 @@ This project was made to allow users to copy servers without having the `Adminis
 - Delays on changing steps: fixing this in a future update.
 
 ## License
-Copyright (c) 2021 ElijahGives
+Copyright (c) 2021 ElijahGives.
 License can be found in `license` file.
