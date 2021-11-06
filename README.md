@@ -7,8 +7,8 @@ This project was made to allow users to copy servers without having the `Adminis
 - Run `start.bat`. If it doesn't work, edit it with your python prefix, it's default set to `py`.
 
 ## Known Bugs
-- Currently, when it creates channels and categories, it doesn't set the overwrites/permissions, and I'm looking for someone to commit a fix to this as I'm stumped on what to do for it.
-- Delays on changing steps: fixing this in a future update.
+- Channel overwrites not being copied. The reason for this is because it's getting overwrites from other guild which means when it updates the overwrites, it tries to add overwrites from the old server which wouldn't work because you cant add permission overwrites from roles that aren't in the same server. I'm stumped on a fix, if anyone wants to make a PR with one, go ahead.
+- Going from creating channels to creating roles is randomly slow, probably due to ratelimits.
 
 ## License
 Copyright (c) 2021 ElijahGives.
