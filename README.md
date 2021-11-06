@@ -12,4 +12,3 @@ This project was made to allow users to copy servers without having the `Adminis
 
 ## License
 Copyright (c) 2021 ElijahGives.
-License can be found in `license` file.

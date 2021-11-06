@@ -2,7 +2,7 @@ from .utils import *
 import discord
 
 class ServerCloner:
-    def __init__(self, client: discord.Client, input_guild: discord.Guild, output_guild: discord.Guild, clear: bool=False):
+    def __init__(self, client: discord.Client, input_guild: discord.Guild, output_guild: discord.Guild, clear: bool = False):
         """ Create a new ServerCloner instance. 
         ``client``: the client you're cloning on: a user account, as a discord.Client object.
         ``input``: the guild to copy, as a discord.Guild object.
@@ -28,21 +28,7 @@ class ServerCloner:
 
         log(blue+'[ClearServer]'+r, 'Current Stage: Channels')
 
-        for channel in self.output_guild.categories:
-            try:
-                await channel.delete()
-                log(green+'[ClearServer]'+r, f'Deleted channel {cyan+str(channel.id)+r}.')
-            except:
-                log(red+'[ClearServer]'+r, f'Failed to delete channel {cyan+str(channel.id)+r}.')
-        
-        for channel in self.output_guild.voice_channels:
-            try:
-                await channel.delete()
-                log(green+'[ClearServer]'+r, f'Deleted channel {cyan+str(channel.id)+r}.')
-            except:
-                log(red+'[ClearServer]'+r, f'Failed to delete channel {cyan+str(channel.id)+r}.')
-
-        for channel in self.output_guild.text_channels:
+        for channel in self.output_guild.channels:
             try:
                 await channel.delete()
                 log(green+'[ClearServer]'+r, f'Deleted channel {cyan+str(channel.id)+r}.')
@@ -67,7 +53,7 @@ class ServerCloner:
                 name=category.name, overwrites=category.overwrites
             )
             await new_category.edit(
-                position=int(category.position), nsfw=category.is_nsfw(), overwrites=category.overwrites
+                position=int(category.position), nsfw=category.is_nsfw()
             )
             log(blue+'[ServerCloner]'+r, f'Created category {cyan+str(category.id)+r}.')
             self.created_map[str(category.id)] = new_category.id
