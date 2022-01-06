@@ -48,9 +48,14 @@ class ServerCloner:
             log(blue+'[ServerCloner]'+r, f'Created role {cyan+str(new_role.id)+r}.')
     
     async def create_categories(self):
+        
         for category in self.input_guild.categories:
+            overwrites_to = {}
+            for key, value in category.overwrites.items():
+                role = discord.utils.get(self.input_guild.roles, name=key.name)
+                overwrites_to[role] = value
             new_category = await self.output_guild.create_category_channel(
-                name=category.name, overwrites=category.overwrites
+                name=category.name, overwrites=overwrites_to
             )
             await new_category.edit(
                 position=int(category.position), nsfw=category.is_nsfw()
@@ -60,36 +65,40 @@ class ServerCloner:
     
     async def create_text_channels(self):
         for channel in self.input_guild.text_channels:
+            overwrites_to = {}
+            for key, value in channel.overwrites.items():
+                    role = discord.utils.get(self.input_guild.roles, name=key.name)
+                    overwrites_to[role] = value
             if channel.category_id is not None:
                 new_category_id = self.created_map.get(str(channel.category_id))
 
                 new_category = await self.client.fetch_channel(int(new_category_id))
                 new_channel = await new_category.create_text_channel(
                     name=channel.name, topic=channel.topic, position=channel.position, slowmode_delay=channel.slowmode_delay, 
-                    nsfw=channel.is_nsfw(), overwrites=channel.overwrites
+                    nsfw=channel.is_nsfw(), overwrites=overwrites_to
                 )
-                await new_channel.edit(overwrites=channel.overwrites)
                 log(blue+'[ServerCloner]'+r, f'Created channel {cyan+str(new_channel.id)+r}.')
             else:
                 new_channel = await self.output_guild.create_text_channel(name=channel.name, topic=channel.topic, position=channel.position,
                                                 slowmode_delay=channel.slowmode_delay, nsfw=channel.is_nsfw(),
-                                                overwrites=new_channel.overwrites)
-                await new_channel.edit(overwrites=channel.overwrites)
+                                                overwrites=overwrites_to)
                 log(blue+'[ServerCloner]'+r, f'Created channel {cyan+str(new_channel.id)+r}.')
 
     async def create_voice_channels(self):
         for channel in self.input_guild.voice_channels:
+            overwrites_to = {}
+            for key, value in channel.overwrites.items():
+                    role = discord.utils.get(self.input_guild.roles, name=key.name)
+                    overwrites_to[role] = value
             if channel.category_id is not None:
                 new_category_id = self.created_map.get(str(channel.category_id))
                 new_category = await self.client.fetch_channel(int(new_category_id))
                 new_channel = await new_category.create_voice_channel(name=channel.name, position=channel.position,
-                                                    user_limit=channel.user_limit, overwrites=channel.overwrites)
-                await new_channel.edit(overwrites=channel.overwrites)
+                                                    user_limit=channel.user_limit, overwrites=overwrites_to)
                 log(blue+'[ServerCloner]'+r, f'Created channel {cyan+str(new_channel.id)+r}.')
             else:
                 new_channel = await self.output_guild.create_voice_channel(name=channel.name, position=channel.position,
-                                                 user_limit=channel.user_limit, overwrites=channel.overwrites)
-                await new_channel.edit(overwrites=channel.overwrites)
+                                                 user_limit=channel.user_limit, overwrites=overwrites_to)
                 log(blue+'[ServerCloner]'+r, f'Created channel {cyan+str(new_channel.id)+r}.')
 
     async def execute_clear_server(self):
@@ -102,8 +111,8 @@ class ServerCloner:
         not_finished = True
         while not_finished:
             await self.execute_clear_server()
+            await self.create_roles()
             await self.create_categories()
             await self.create_text_channels()
             await self.create_voice_channels()
-            await self.create_roles()
             not_finished = False
